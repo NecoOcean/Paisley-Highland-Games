@@ -119,6 +119,27 @@ npm run d1:seed
 
 > **注意**：如果 `npm run d1:seed` 失败，可以手动执行 `node scripts/seed-remote.js`。
 
+### 2.4 验证数据库迁移完毕
+
+```bash
+# 查看用户表是否有数据
+wrangler d1 execute paisley-highland-games-db --remote --command "SELECT email, role FROM users"
+
+# 查看事件表是否有数据
+wrangler d1 execute paisley-highland-games-db --remote --command "SELECT COUNT(*) FROM events"
+
+# 查看所有表
+wrangler d1 execute paisley-highland-games-db --remote --command "SELECT name FROM sqlite_master WHERE type='table'"
+```
+
+出现以下数据说明迁移完毕
+
+![image-20251207213140218](C:\Users\NecoOcean\AppData\Roaming\Typora\typora-user-images\image-20251207213140218.png)
+
+![image-20251207213150547](C:\Users\NecoOcean\AppData\Roaming\Typora\typora-user-images\image-20251207213150547.png)
+
+![image-20251207213221155](C:\Users\NecoOcean\AppData\Roaming\Typora\typora-user-images\image-20251207213221155.png)
+
 ---
 
 ## 第三步：部署 Workers API
@@ -168,6 +189,8 @@ wrangler secret put JWT_SECRET
 
 > **注意**：可以使用密钥生成器来随机生成一个值，例如：kVxNBUQzBmPUb3pXrMMW5hZdPQNBRvGR
 
+![image-20251207213627938](C:\Users\NecoOcean\AppData\Roaming\Typora\typora-user-images\image-20251207213627938.png)
+
 ### 3.4 验证部署
 
 ```bash
@@ -181,7 +204,9 @@ curl https://paisley-highland-games-api.YOUR_SUBDOMAIN.workers.dev/api/health
 {"status":"ok","timestamp":"...","environment":"production"}
 ```
 
-> **注意**：YOUR_SUBDOMAIN应该改为你自己的账号信息，例如：473296477
+![image-20251207213912034](C:\Users\NecoOcean\AppData\Roaming\Typora\typora-user-images\image-20251207213912034.png)
+
+> **注意**：YOUR_SUBDOMAIN应该改为你自己的账号信息，例如：curl https://paisley-highland-games-api.473296477.workers.dev/api/health
 
 ![image-20251207201606381](C:\Users\NecoOcean\AppData\Roaming\Typora\typora-user-images\image-20251207201606381.png)
 
@@ -192,16 +217,17 @@ curl https://paisley-highland-games-api.YOUR_SUBDOMAIN.workers.dev/api/health
 ### 方式一：通过 Cloudflare Dashboard（推荐）
 
 1. 登录 [Cloudflare Dashboard](https://dash.cloudflare.com)
-2. 进入 **Workers & Pages** → **Create application** → **Pages**
-3. 选择 **Connect to Git**
-4. 授权并选择你的 GitHub 仓库
-5. 配置构建设置：
+2. 进入 **Workers & Pages** → **Create application** → 点击”Looking to deploy Pages?  **Get started** ”的Get started
+3. 选择Import an existing Git repository，点击 **Get started**
+4. 授权并选择你的 GitHub 仓库（点击Connect GitHub）
+5. 选择要部署的项目（本项目为Paisley-Highland-Games）
+6. 配置构建设置：
 
 | 配置项 | 值 |
 |--------|-----|
 | Project name | `paisley-highland-games` |
 | Production branch | `main` |
-| Framework preset | `Vite` |
+| Framework preset | `NONE` |
 | Root directory | `frontend` |
 | Build command | `npm run build` |
 | Build output directory | `dist` |
@@ -210,9 +236,11 @@ curl https://paisley-highland-games-api.YOUR_SUBDOMAIN.workers.dev/api/health
 
 | 变量名 | 值 |
 |--------|-----|
-| `VITE_API_URL` | `https://paisley-highland-games-api.YOUR_SUBDOMAIN.workers.dev/api` |
+| `VITE API URL` | `https://paisley-highland-games-api.YOUR_SUBDOMAIN.workers.dev/api` |
 
 7. 点击 **Save and Deploy**
+
+![image-20251207215308423](C:\Users\NecoOcean\AppData\Roaming\Typora\typora-user-images\image-20251207215308423.png)
 
 ### 方式二：通过 CLI
 
@@ -231,20 +259,30 @@ wrangler pages deploy dist --project-name=paisley-highland-games
 
 ---
 
-## 第五步：配置环境变量
+## 第五步：配置环境变量（如果前面配置过了这一步可以跳过）
 
-### Workers 环境变量
+### Workers 环境变量（步骤3.3）
 
 | 变量名 | 说明 | 设置方式 |
 |--------|------|----------|
 | `JWT_SECRET` | JWT 签名密钥 | Dashboard 或 `wrangler secret put` |
 | `ENVIRONMENT` | 环境标识 | wrangler.toml 中配置 |
 
-### Pages 环境变量
+### Pages 环境变量（第四步方式一第6点）
 
 | 变量名 | 说明 | 设置位置 |
 |--------|------|----------|
 | `VITE_API_URL` | Workers API 地址 | Dashboard → Pages → Settings → Environment variables |
+
+到此项目部署完成，可以通过地址访问:
+
+- https://paisley-highland-games.pages.dev/
+
+或者点击Dashbord中的Deployments->Production->Domains:paisley-highland-games.pages.dev访问
+
+![image-20251207215833390](C:\Users\NecoOcean\AppData\Roaming\Typora\typora-user-images\image-20251207215833390.png)
+
+
 
 ---
 
