@@ -1,0 +1,24 @@
+# Cloudflare Workers configuration for Paisley Highland Games API
+name = "paisley-highland-games-api"
+main = "src/index.js"
+compatibility_date = "2024-12-01"
+
+# Environment variables (set these in Cloudflare dashboard for production)
+[vars]
+ENVIRONMENT = "development"
+
+# D1 Database binding
+[[d1_databases]]
+binding = "DB"
+database_name = "paisley-highland-games-db"
+database_id = "YOUR_DATABASE_ID_HERE"  # Replace after running: wrangler d1 create paisley-highland-games-db
+
+# For local development
+[env.development]
+[env.development.vars]
+ENVIRONMENT = "development"
+
+# For production
+[env.production]
+[env.production.vars]
+ENVIRONMENT = "production"
