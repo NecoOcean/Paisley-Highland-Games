@@ -1,0 +1,226 @@
+.admin-page {
+  min-height: 100vh;
+  padding-bottom: 3rem;
+  background: #f7fafc;
+}
+
+.admin-header {
+  background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
+  color: white;
+  padding: 2rem 1rem;
+  margin-bottom: 2rem;
+}
+
+.admin-header h1 {
+  font-size: 2rem;
+  margin-bottom: 0.25rem;
+}
+
+.admin-header p {
+  opacity: 0.8;
+}
+
+.admin-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid #e2e8f0;
+  padding-bottom: 0.5rem;
+}
+
+.tab-btn {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  background: none;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #718096;
+  cursor: pointer;
+  border-radius: 8px 8px 0 0;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.tab-btn:hover {
+  color: #1a202c;
+  background: #edf2f7;
+}
+
+.tab-btn.active {
+  color: #2b6cb0;
+  background: white;
+  box-shadow: 0 -2px 0 #2b6cb0 inset;
+}
+
+.tab-btn .badge {
+  background: #e53e3e;
+  color: white;
+  padding: 0.125rem 0.5rem;
+  border-radius: 10px;
+  font-size: 0.75rem;
+}
+
+.admin-content {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Dashboard */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+}
+
+.stat-icon {
+  font-size: 2.5rem;
+}
+
+.stat-info h3 {
+  font-size: 2rem;
+  color: #1a202c;
+  margin: 0;
+}
+
+.stat-info p {
+  color: #718096;
+  margin: 0;
+}
+
+.recent-section h2,
+.registrations-admin h2,
+.messages-admin h2 {
+  font-size: 1.25rem;
+  color: #1a202c;
+  margin-bottom: 1rem;
+}
+
+/* Tables */
+.table-container {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+th {
+  background: #f7fafc;
+  font-weight: 600;
+  color: #4a5568;
+  font-size: 0.875rem;
+}
+
+td {
+  color: #1a202c;
+}
+
+.status, .payment {
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.status.pending { background: #fefcbf; color: #744210; }
+.status.confirmed { background: #c6f6d5; color: #22543d; }
+.status.cancelled { background: #fed7d7; color: #742a2a; }
+.status.completed { background: #bee3f8; color: #2a4365; }
+
+.payment.unpaid { background: #fed7d7; color: #742a2a; }
+.payment.paid { background: #c6f6d5; color: #22543d; }
+.payment.refunded { background: #e2e8f0; color: #4a5568; }
+
+.status-select {
+  padding: 0.375rem 0.5rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 4px;
+  font-size: 0.875rem;
+}
+
+/* Messages */
+.messages-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.message-card {
+  padding: 1.25rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.message-card.unread {
+  background: #ebf8ff;
+  border-color: #90cdf4;
+}
+
+.message-card.read {
+  background: #f7fafc;
+}
+
+.message-card:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.message-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.message-sender {
+  display: flex;
+  flex-direction: column;
+}
+
+.message-sender strong {
+  color: #1a202c;
+}
+
+.message-sender span {
+  color: #718096;
+  font-size: 0.875rem;
+}
+
+.message-date {
+  color: #718096;
+  font-size: 0.875rem;
+}
+
+.message-subject {
+  font-weight: 600;
+  color: #2d3748;
+  margin-bottom: 0.5rem;
+}
+
+.message-body {
+  color: #4a5568;
+  line-height: 1.6;
+}

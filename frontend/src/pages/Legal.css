@@ -1,0 +1,142 @@
+.legal-page {
+  min-height: 100vh;
+  padding-bottom: 3rem;
+}
+
+.legal-header {
+  background: linear-gradient(135deg, #1a365d 0%, #2d4a7c 100%);
+  color: white;
+  padding: 3rem 1rem;
+  margin-bottom: 2rem;
+}
+
+.legal-header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.legal-header p {
+  opacity: 0.9;
+  font-size: 1.25rem;
+}
+
+.legal-content {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.legal-section {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+}
+
+.legal-section h2 {
+  font-size: 1.5rem;
+  color: #1a365d;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.legal-section h3 {
+  font-size: 1.125rem;
+  color: #2d3748;
+  margin: 1.5rem 0 0.75rem;
+}
+
+.legal-section p {
+  color: #4a5568;
+  line-height: 1.8;
+  margin-bottom: 1rem;
+}
+
+.legal-section ul {
+  color: #4a5568;
+  line-height: 1.8;
+  padding-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.legal-section ul li {
+  margin-bottom: 0.5rem;
+}
+
+.legal-section a {
+  color: #2b6cb0;
+  text-decoration: none;
+}
+
+.legal-section a:hover {
+  text-decoration: underline;
+}
+
+.gdpr-highlight {
+  background: #fffbeb;
+  border: 1px solid #f6ad55;
+}
+
+.gdpr-highlight h2 {
+  border-bottom-color: #f6ad55;
+}
+
+.rights-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.right-card {
+  background: #f7fafc;
+  padding: 1.25rem;
+  border-radius: 8px;
+  border-left: 4px solid #4299e1;
+}
+
+.right-card h4 {
+  color: #1a365d;
+  margin: 0 0 0.5rem;
+  font-size: 1rem;
+}
+
+.right-card p {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.contact-box {
+  background: #ebf8ff;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-top: 1.5rem;
+}
+
+.contact-box h4 {
+  color: #1a365d;
+  margin: 0 0 0.75rem;
+}
+
+.contact-box p {
+  margin: 0.25rem 0;
+}
+
+.last-updated {
+  font-size: 0.875rem;
+  color: #718096;
+  font-style: italic;
+  margin-top: 1rem;
+}
+
+@media (max-width: 768px) {
+  .legal-header h1 {
+    font-size: 2rem;
+  }
+
+  .legal-section {
+    padding: 1.5rem;
+  }
+}
