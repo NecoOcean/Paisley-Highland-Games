@@ -7,10 +7,10 @@
     "dev": "wrangler dev",
     "deploy": "wrangler deploy",
     "d1:create": "wrangler d1 create paisley-highland-games-db",
-    "d1:migrate": "wrangler d1 execute paisley-highland-games-db --file=./migrations/0001_init.sql",
+    "d1:migrate": "wrangler d1 execute paisley-highland-games-db --remote --file=./migrations/0001_init.sql",
     "d1:migrate:local": "wrangler d1 execute paisley-highland-games-db --local --file=./migrations/0001_init.sql",
-    "d1:seed": "wrangler d1 execute paisley-highland-games-db --file=./migrations/0002_seed.sql",
-    "d1:seed:local": "wrangler d1 execute paisley-highland-games-db --local --file=./migrations/0002_seed.sql",
+    "d1:seed": "node scripts/seed-remote.js",
+    "d1:seed:local": "node scripts/seed-remote.js --local",
     "setup:local": "npm run d1:migrate:local && npm run d1:seed:local",
     "setup:remote": "npm run d1:migrate && npm run d1:seed"
   },

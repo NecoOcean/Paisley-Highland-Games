@@ -109,16 +109,15 @@ database_id = "你的数据库ID"  # 替换这里
 
 ```bash
 # 创建表结构（远程）
-wrangler d1 execute paisley-highland-games-db --remote --file=./migrations/0001_init.sql
+npm run d1:migrate
 
-# 生成种子数据
-node scripts/generate-seed.js > migrations/0002_seed_generated.sql
-
-# 导入种子数据（远程）
-wrangler d1 execute paisley-highland-games-db --remote --file=./migrations/0002_seed_generated.sql
+# 导入种子数据（远程）- 使用脚本逐条执行，避免大文件导入失败
+npm run d1:seed
 ```
 
-> **注意**：使用 `--remote` 标志来操作生产数据库，不带此标志则操作本地数据库。
+脚本会自动生成密码哈希并逐条插入数据，完成后会显示演示账户信息。
+
+> **注意**：如果 `npm run d1:seed` 失败，可以手动执行 `node scripts/seed-remote.js`。
 
 ---
 
@@ -131,26 +130,7 @@ cd workers
 npm install
 ```
 
-### 3.2 配置 JWT 密钥
-
-在 Cloudflare Dashboard 中设置 JWT_SECRET：
-
-1. 登录 [Cloudflare Dashboard](https://dash.cloudflare.com)
-2. 进入 **Workers & Pages** → 选择你的 Worker
-3. 点击 **Settings** → **Variables**
-4. 添加变量：
-   - 名称：`JWT_SECRET`
-   - 值：生成一个强随机字符串（建议 32+ 字符）
-   - 类型：选择 **Encrypt**（加密）
-
-或者使用 CLI：
-
-```bash
-wrangler secret put JWT_SECRET
-# 按提示输入你的密钥
-```
-
-### 3.3 部署
+### 3.2 部署 Worker
 
 ```bash
 # 部署到 Cloudflare
@@ -166,6 +146,28 @@ Published paisley-highland-games-api
 
 **记录这个 URL**，后续配置前端需要使用。
 
+### 3.3 配置 JWT 密钥
+
+> **注意**：必须先完成上一步部署，才能设置 Secret。
+
+使用 CLI 设置 JWT_SECRET：
+
+```bash
+wrangler secret put JWT_SECRET
+# 按提示输入你的密钥（建议 32+ 字符的强随机字符串）
+```
+
+或者通过 Cloudflare Dashboard 设置：
+
+1. 登录 [Cloudflare Dashboard](https://dash.cloudflare.com)
+2. 进入 **Workers & Pages** → 选择 `paisley-highland-games-api`
+3. 点击 **Settings** → **Variables**
+4. 在 **Secrets** 部分添加：
+   - 名称：`JWT_SECRET`
+   - 值：你的密钥字符串
+
+> **注意**：可以使用密钥生成器来随机生成一个值，例如：kVxNBUQzBmPUb3pXrMMW5hZdPQNBRvGR
+
 ### 3.4 验证部署
 
 ```bash
@@ -178,6 +180,10 @@ curl https://paisley-highland-games-api.YOUR_SUBDOMAIN.workers.dev/api/health
 ```json
 {"status":"ok","timestamp":"...","environment":"production"}
 ```
+
+> **注意**：YOUR_SUBDOMAIN应该改为你自己的账号信息，例如：473296477
+
+![image-20251207201606381](C:\Users\NecoOcean\AppData\Roaming\Typora\typora-user-images\image-20251207201606381.png)
 
 ---
 
@@ -252,10 +258,9 @@ cd workers
 # 安装依赖
 npm install
 
-# 初始化本地数据库
-wrangler d1 execute paisley-highland-games-db --local --file=./migrations/0001_init.sql
-node scripts/generate-seed.js > migrations/0002_seed_generated.sql
-wrangler d1 execute paisley-highland-games-db --local --file=./migrations/0002_seed_generated.sql
+# 初始化本地数据库（使用简化命令）
+npm run d1:migrate:local
+npm run d1:seed:local
 
 # 启动开发服务器（端口 8787）
 npm run dev
@@ -390,7 +395,20 @@ const allowedOrigins = [
 
 3. 重新部署 Worker
 
-### Q2: 数据库操作失败
+### Q2: 数据库种子数据导入失败
+
+**症状**：执行 `--file` 导入 SQL 文件时显示 `0 queries executed`
+
+**原因**：Wrangler 的大文件导入存在兼容性问题
+
+**解决方案**：使用脚本逐条执行
+
+```bash
+cd workers
+npm run d1:seed
+```
+
+### Q3: 数据库操作失败
 
 **检查项**：
 
@@ -401,7 +419,7 @@ const allowedOrigins = [
    wrangler tail
    ```
 
-### Q3: JWT 验证失败
+### Q4: JWT 验证失败
 
 **检查项**：
 
@@ -412,7 +430,7 @@ const allowedOrigins = [
    wrangler secret put JWT_SECRET
    ```
 
-### Q4: 本地开发数据库为空
+### Q5: 本地开发数据库为空
 
 **解决方案**：
 
@@ -420,12 +438,11 @@ const allowedOrigins = [
 cd workers
 
 # 重新初始化本地数据库
-wrangler d1 execute paisley-highland-games-db --local --file=./migrations/0001_init.sql
-node scripts/generate-seed.js > migrations/0002_seed_generated.sql
-wrangler d1 execute paisley-highland-games-db --local --file=./migrations/0002_seed_generated.sql
+npm run d1:migrate:local
+npm run d1:seed:local
 ```
 
-### Q5: 页面刷新返回 404
+### Q6: 页面刷新返回 404
 
 **解决方案**：
 
@@ -453,18 +470,18 @@ Cloudflare 免费层限制：
 
 ## 部署检查清单
 
-- [ ] Wrangler CLI 已安装并登录
-- [ ] D1 数据库已创建
-- [ ] `wrangler.toml` 中 database_id 已更新
-- [ ] 数据库迁移已执行（schema + seed）
-- [ ] JWT_SECRET 已设置
-- [ ] Workers 已部署
-- [ ] Pages 项目已创建
-- [ ] VITE_API_URL 环境变量已设置
-- [ ] 前端已部署
-- [ ] CORS 配置正确
-- [ ] API 健康检查通过
-- [ ] 登录功能测试通过
+- [x] Wrangler CLI 已安装并登录
+- [x] D1 数据库已创建
+- [x] `wrangler.toml` 中 database_id 已更新
+- [x] 数据库迁移已执行（schema + seed）
+- [x] JWT_SECRET 已设置
+- [x] Workers 已部署
+- [x] Pages 项目已创建
+- [x] VITE_API_URL 环境变量已设置
+- [x] 前端已部署
+- [x] CORS 配置正确
+- [x] API 健康检查通过
+- [x] 登录功能测试通过
 
 ---
 
